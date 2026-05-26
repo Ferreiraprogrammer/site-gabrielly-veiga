@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabrielly Veiga | Acadêmica de Direito</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,300&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome para ícones das seções e contatos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- RESET & VARIÁVEIS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        :root {
+            --cor-principal: #3a2a45;   /* Roxo escuro para contraste profissional */
+            --cor-detalhe: #b39ddb;     /* Lilás de destaque */
+            --cor-texto: #2c2530;       /* Texto escuro quase roxo */
+            --fonte-titulo: 'Merriweather', serif;
+            --fonte-corpo: 'Montserrat', sans-serif;
+        }
+
+        body {
+            font-family: var(--fonte-corpo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: #f3e5f5; /* Lilás bem clarinho de fundo padrão */
+        }
+
+        /* --- CANVAS DO FUNDO ANIMADO --- */
+        #fundo-animado {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* Fica atrás de absolutamente tudo */
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); /* Degradê Lilás */
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); /* Efeito de vidro fosco */
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: var(--fonte-titulo);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--cor-principal);
+            letter-spacing: 1px;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--cor-texto);
+            margin-left: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: var(--cor-principal);
+            border-bottom: 2px solid var(--cor-detalhe);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            margin-top: 80px;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 10%;
+        }
+        .hero-text {
+            max-width: 55%;
+            background: rgba(255, 255, 255, 0.75); /* Fundo semi-transparente para leitura */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            backdrop-filter: blur(5px);
+        }
+        .hero-text h1 {
+            font-family: var(--fonte-titulo);
+            font-size: 3rem;
+            color: var(--cor-principal);
+            margin-bottom: 10px;
+        }
+        .hero-text h2 {
+            font-size: 1.1rem;
+            color: #7b1fa2; /* Roxo vibrante */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .hero-text p {
+            font-size: 1rem;
+            color: #4a3b52;
+            margin-bottom: 30px;
+        }
+        .hero-img img {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #ffffff;
+            box-shadow: 0 10px 25px rgba(123, 31, 162, 0.2);
+        }
+
+        /* --- SEÇÕES GENÉRICAS --- */
+        section {
+            padding: 80px 10%;
+        }
+        .section-content {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.03);
+            backdrop-filter: blur(5px);
+        }
+        .section-title {
+            font-family: var(--fonte-titulo);
+            font-size: 2rem;
+            color: var(--cor-principal);
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--cor-detalhe);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* --- SOBRE MIM --- */
+        #sobre p {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            text-align: center;
+            font-size: 1.05rem;
+            color: var(--cor-texto);
+        }
+
+        /* --- ÁREAS DE INTERESSE --- */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border-top: 4px solid var(--cor-principal);
+            transition: transform 0.3s, border-color 0.3s;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-top-color: var(--cor-detalhe);
+        }
+        .card i {
+            font-size: 2.2rem;
+            color: #7b1fa2;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            font-family: var(--fonte-titulo);
+            margin-bottom: 10px;
+            color: var(--cor-principal);
+        }
+
+        /* --- CARTÃO DE VISITAS / CONTATO --- */
+        .links-digitais {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .btn-contato {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--cor-principal);
+            color: #ffffff;
+            border: 2px solid transparent;
+            padding: 14px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(58, 42, 69, 0.2);
+        }
+        .btn-contato:hover {
+            background-color: transparent;
+            color: var(--cor-principal);
+            border-color: var(--cor-principal);
+            transform: scale(1.05);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: rgba(58, 42, 69, 0.95);
+            color: #e1bee7;
+            text-align: center;
+            padding: 25px;
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 768px) {
+            nav { display: none; } 
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 20px 5%;
+                margin-top: 100px;
+            }
+            .hero-text { max-width: 100%; margin-top: 30px; }
+            .hero-text h1 { font-size: 2.2rem; }
+            .hero-img img { width: 220px; height: 220px; }
+            section { padding: 40px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CANVAS PARA O FUNDO LILÁS COM DESENHOS FLUTUANDO -->
+    <canvas id="fundo-animado"></canvas>
+
+    <!-- CABEÇALHO / MENU -->
+    <header>
+        <div class="logo">GV</div>
+        <nav>
+            <a href="#sobre">Sobre</a>
+            <a href="#foco">Interesses</a>
+            <a href="#contato">Cartão Virtual</a>
+        </nav>
+    </header>
+
+    <!-- APRESENTAÇÃO (HERO) -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Gabrielly Veiga</h1>
+            <h2>Acadêmica de Direito</h2>
+            <p>Unindo dedicação acadêmica, ética e uma visão humanizada do Direito para construir soluções jurídicas justas e inovadoras.</p>
+            <a href="#contato" class="btn-contato">Entrar em Contato</a>
+        </div>
+        <div class="hero-img">
+            <!-- Substitua pelo link ou caminho da foto dela -->
+            <img src="Foto_site.jpeg" alt="Foto de Gabrielly Veiga">
+        </div>
+    </section>
+
+    <!-- SOBRE MIM -->
+    <section id="sobre">
+        <div class="section-content">
+            <h2 class="section-title">Sobre Mim</h2>
+            <p>Graduanda em Direito, apaixonada pela busca da justiça e pela aplicação prática das normas em prol da sociedade. Minha jornada acadêmica é focada no desenvolvimento de um olhar analítico, crítico e altamente ético.</p>
+            <p>Busco constantemente alinhar o aprendizado teórico das salas de aula com os desafios contemporâneos do universo jurídico, preparando-me para uma atuação profissional dinâmica e comprometida.</p>
+        </div>
+    </section>
+
+    <!-- ÁREAS DE INTERESSE -->
+    <section id="foco">
+        <div class="section-content">
+            <h2 class="section-title">Áreas de Interesse</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <h3>Direito Civil</h3>
+                    <p>Foco nas relações contratuais, obrigações, direito de família e defesas de direitos civis.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-handshake"></i>
+                    <h3>Resolução de Conflitos</h3>
+                    <p>Estudo voltado para a mediação e conciliação como formas céleres de justiça.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-gavel"></i>
+                    <h3>Direito Processual</h3>
+                    <p>Acompanhamento das transformações e ritos do ordenamento processual brasileiro.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARTÃO DE VISITAS DIGITAL -->
+    <section id="contato">
+        <div class="section-content">
+            <h2 class="section-title">Cartão de Visitas Digital</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Clique em qualquer um dos canais abaixo para falar diretamente comigo:</p>
+            
+            <div class="links-digitais">
+                <!-- WhatsApp -->
+                <a href="https://wa.me/5522998218861" target="_blank" class="btn-contato">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </a>
+                <!-- LinkedIn -->
+                <a href="https://linkedin.com/in/seu-usuario" target="_blank" class="btn-contato">
+                    <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+                </a>
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/dto.gabeveiga?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="btn-contato">
+                    <i class="fa-brands fa-instagram"></i> Instagram
+                </a>
+                <!-- E-mail -->
+                <a href="mailto:seu-email@email.com" class="btn-contato">
+                    <i class="fa-solid fa-envelope"></i> E-mail
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 Gabrielly Veiga. Todos os direitos reservados.</p>
+        <p>Desenvolvido com <i class="fa-solid fa-heart" style="color: #b39ddb;"></i> por, Patrick Ferreira</p>
+    </footer>
+
+    <!-- SCRIPT PARA O CANVAS (ANIMAÇÃO DOS ÍCONES FLUTUANTES) -->
+    <script>
+        const canvas = document.getElementById('fundo-animado');
+        const ctx = canvas.getContext('2d');
+
+        // Ajusta o tamanho do canvas para ocupar a tela inteira
+        function ajustarCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        ajustarCanvas();
+        window.addEventListener('resize', ajustarCanvas);
+
+        // Ícones em formato unicode para desenhar no Canvas (FontAwesome / Símbolos jurídicos)
+        // \u2696 é a Balança Clássica. Para a Deusa vendada, usamos uma representação estilizada elegante de estátua/justiça (\u{1F5FD} ou similar, mas texto estilizado "Justitia" ou o símbolo \u2696 modificado fica excelente. Vamos usar a balança e a espada/justiça clássica).
+        const iconesValidos = ['\u2696', '\u2694', 'Justitia']; 
+
+        const elementos = [];
+        const quantidadeElementos = 25; // Quantidade de desenhos flutuando ao fundo
+
+        // Inicializa as propriedades de cada desenho flutuante
+        for (let i = 0; i < quantidadeElementos; i++) {
+            elementos.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vX: (Math.random() - 0.5) * 0.5, // Velocidade X bem suave
+                vY: (Math.random() - 0.5) * 0.5, // Velocidade Y bem suave
+                tamanho: Math.random() * 20 + 20, // Tamanho entre 20px e 40px (pequenos)
+                tipo: Math.random() > 0.5 ? 'balanca' : 'justica',
+                opacidade: Math.random() * 0.15 + 0.05, // Super transparente estilo padrão WhatsApp (5% a 20%)
+                angulo: Math.random() * Math.PI * 2,
+                velocidadeRotacao: (Math.random() - 0.5) * 0.005
+            });
+        }
+
+        function animar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            elementos.forEach(el => {
+                // Atualiza posições
+                el.x += el.vX;
+                el.y += el.vY;
+                el.angulo += el.velocidadeRotacao;
+
+                // Se sair da tela, reaparece do outro lado
+                if (el.x < -50) el.x = canvas.width + 50;
+                if (el.x > canvas.width + 50) el.x = -50;
+                if (el.y < -50) el.y = canvas.height + 50;
+                if (el.y > canvas.height + 50) el.y = -50;
+
+                ctx.save();
+                ctx.translate(el.x, el.y);
+                ctx.rotate(el.angulo);
+                
+                // Cor roxa bem clarinha aplicada com a opacidade individual do elemento
+                ctx.fillStyle = `rgba(106, 27, 154, ${el.opacidade})`; 
+                
+                if (el.tipo === 'balanca') {
+                    ctx.font = `${el.tamanho}px serif`;
+                    ctx.fillText('\u2696', -el.tamanho/2, el.tamanho/2); // Desenha a balança jurídica
+                } else {
+                    // Representação simbólica elegante da Justiça com a espada/venda (Estilizada em texto sutil)
+                    ctx.font = `italic bold ${el.tamanho * 0.7}px 'Merriweather'`;
+                    ctx.fillText('⚖', -el.tamanho/2, el.tamanho/4);
+                    ctx.font = `${el.tamanho * 0.4}px 'Montserrat'`;
+                    ctx.fillText('Lex', -el.tamanho/4, el.tamanho/1.2);
+                }
+                ctx.restore();
+            });
+
+            requestAnimationFrame(animar);
+        }
+
+        animar();
+    </script>
+</body>
+</html>
